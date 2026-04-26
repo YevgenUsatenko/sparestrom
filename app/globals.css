@@ -1,0 +1,205 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono-family);
+  --font-heading: var(--font-display);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* sparestrom custom colors */
+  --color-sp-bg: var(--sp-bg);
+  --color-sp-bg-2: var(--sp-bg-2);
+  --color-sp-surface: var(--sp-surface);
+  --color-sp-surface-2: var(--sp-surface-2);
+  --color-sp-border: var(--sp-border);
+  --color-sp-border-strong: var(--sp-border-strong);
+  --color-sp-text: var(--sp-text);
+  --color-sp-text-muted: var(--sp-text-muted);
+  --color-sp-text-subtle: var(--sp-text-subtle);
+  --color-sp-accent: var(--sp-accent);
+  --color-sp-accent-soft: var(--sp-accent-soft);
+  --color-sp-accent-glow: var(--sp-accent-glow);
+  --color-sp-accent-dim: var(--sp-accent-dim);
+  --color-sp-at-red: var(--sp-at-red);
+  --color-sp-success: var(--sp-success);
+  --color-sp-danger: var(--sp-danger);
+
+  /* sparestrom spacing */
+  --sp-container: 1240px;
+  --sp-gutter: clamp(20px, 4vw, 40px);
+
+  /* sparestrom ease */
+  --ease-sp: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  /* shadcn tokens (dark theme as default since sparestrom is dark-first) */
+  --background: #08090c;
+  --foreground: #f2f3f5;
+  --card: #111218;
+  --card-foreground: #f2f3f5;
+  --popover: #111218;
+  --popover-foreground: #f2f3f5;
+  --primary: #c5ff2e;
+  --primary-foreground: #000000;
+  --secondary: #171921;
+  --secondary-foreground: #f2f3f5;
+  --muted: #171921;
+  --muted-foreground: #8b8d97;
+  --accent: #c5ff2e;
+  --accent-foreground: #000000;
+  --destructive: #ff5c5c;
+  --border: #1e2029;
+  --input: #1e2029;
+  --ring: rgba(197, 255, 46, 0.32);
+  --chart-1: #c5ff2e;
+  --chart-2: #9fd625;
+  --chart-3: #8b8d97;
+  --chart-4: #5b5d66;
+  --chart-5: #2a2d38;
+  --radius: 0.625rem;
+  --sidebar: #0d0e13;
+  --sidebar-foreground: #f2f3f5;
+  --sidebar-primary: #c5ff2e;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #171921;
+  --sidebar-accent-foreground: #f2f3f5;
+  --sidebar-border: #1e2029;
+  --sidebar-ring: rgba(197, 255, 46, 0.32);
+
+  /* sparestrom design tokens */
+  --sp-bg: #08090c;
+  --sp-bg-2: #0d0e13;
+  --sp-surface: #111218;
+  --sp-surface-2: #171921;
+  --sp-border: #1e2029;
+  --sp-border-strong: #2a2d38;
+
+  --sp-text: #f2f3f5;
+  --sp-text-muted: #8b8d97;
+  --sp-text-subtle: #5b5d66;
+
+  --sp-accent: #c5ff2e;
+  --sp-accent-soft: rgba(197, 255, 46, 0.14);
+  --sp-accent-glow: rgba(197, 255, 46, 0.32);
+  --sp-accent-dim: #9fd625;
+
+  --sp-at-red: #ef2b2d;
+
+  --sp-success: #c5ff2e;
+  --sp-danger: #ff5c5c;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    background: var(--sp-bg);
+    color: var(--sp-text);
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.55;
+    overflow-x: hidden;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  img, svg {
+    display: block;
+    max-width: 100%;
+  }
+  ::selection {
+    background: var(--sp-accent);
+    color: #000;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   KEYFRAME ANIMATIONS
+   ───────────────────────────────────────────────────────────── */
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.4); }
+}
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, 60px) scale(1.05); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SCROLL REVEAL
+   ───────────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s var(--ease-sp), transform 0.8s var(--ease-sp);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BACKGROUND EFFECTS
+   ───────────────────────────────────────────────────────────── */
+.grain {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.dot-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.4;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.055) 1px, transparent 0);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 70%);
+}
