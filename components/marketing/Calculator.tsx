@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 const PRESETS = [
   { label: "1 Person · 1.500", value: 1500 },
@@ -21,14 +21,19 @@ function BoltIcon() {
   );
 }
 
-function ChevronIcon() {
+function PhoneIcon() {
   return (
-    <svg
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-[3px]"
-    >
-      <path d="M7.05 3.05l5 5-5 5-1.4-1.4 3.6-3.6-3.6-3.6 1.4-1.4z" />
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  );
+}
+
+function CheckCircleIcon() {
+  return (
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sp-accent">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
     </svg>
   );
 }
@@ -38,6 +43,11 @@ export default function Calculator() {
   const [verbrauch, setVerbrauch] = useState(3500);
   const [preis, setPreis] = useState(29.5);
   const [activePreset, setActivePreset] = useState(3500);
+
+  const [telefon, setTelefon] = useState("");
+  const [email, setEmail] = useState("");
+  const [submitState, setSubmitState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const calculate = useCallback(() => {
     const v = Math.max(500, verbrauch || 0);
@@ -52,6 +62,38 @@ export default function Calculator() {
   }, [verbrauch, preis]);
 
   const { saving, currAnnual, nextAnnual, pct } = calculate();
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!telefon.trim() && !email.trim()) {
+      setErrorMsg("Bitte Telefonnummer oder E-Mail angeben.");
+      return;
+    }
+
+    setSubmitState("loading");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          plz,
+          verbrauch,
+          preis,
+          saving: Math.round(saving),
+          telefon: telefon.trim(),
+          email: email.trim(),
+        }),
+      });
+
+      if (!res.ok) throw new Error("Anfrage fehlgeschlagen");
+      setSubmitState("success");
+    } catch {
+      setSubmitState("error");
+      setErrorMsg("Etwas ist schiefgelaufen. Bitte versuch es nochmal.");
+    }
+  }
 
   return (
     <section className="relative py-[clamp(80px,10vh,140px)]" id="rechner">
@@ -72,7 +114,6 @@ export default function Calculator() {
         </div>
 
         <div className="reveal relative overflow-hidden rounded-[20px] border border-sp-border bg-[linear-gradient(180deg,var(--sp-surface)_0%,var(--sp-bg-2)_100%)] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.6)]">
-          {/* Top accent line */}
           <div className="absolute left-0 right-0 top-0 h-px bg-[linear-gradient(90deg,transparent_10%,var(--sp-accent)_50%,transparent_90%)] opacity-50" />
 
           <div className="grid min-h-[520px] grid-cols-[1.1fr_0.9fr] max-[900px]:grid-cols-1">
@@ -250,34 +291,90 @@ export default function Calculator() {
                 </div>
               </div>
 
-              {/* Provider card */}
-              <div className="mb-5 flex items-center justify-between rounded-xl border border-sp-border bg-sp-bg p-4">
-                <div className="flex items-center gap-3">
-                  <div className="grid h-9 w-9 place-items-center rounded-lg bg-[linear-gradient(135deg,var(--sp-accent),var(--sp-accent-dim))] font-[family-name:var(--font-display)] text-sm font-bold text-black">
-                    aW
+              {/* Lead Capture Form */}
+              {submitState === "success" ? (
+                <div className="flex flex-1 flex-col items-center justify-center rounded-xl border border-sp-border bg-sp-bg p-6 text-center">
+                  <CheckCircleIcon />
+                  <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl font-medium">
+                    Anfrage erhalten!
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-sp-text-muted">
+                    Wir melden uns innerhalb von 24 Stunden bei dir mit dem besten Tarif für deine Situation.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="rounded-xl border border-sp-border bg-sp-bg p-5">
+                  <div className="mb-4">
+                    <div className="mb-1 text-sm font-medium">
+                      Kostenlose Beratung anfordern
+                    </div>
+                    <p className="text-xs leading-relaxed text-sp-text-muted">
+                      Wir finden den besten Tarif für dich — unverbindlich und ohne Kosten.
+                    </p>
                   </div>
-                  <div>
-                    <div className="text-sm font-medium">aWATTar HOURLY</div>
-                    <div className="font-[family-name:var(--font-mono-family)] text-xs text-sp-text-muted">
-                      15,6 ct/kWh · monatlich kündbar
+
+                  <div className="mb-3">
+                    <label htmlFor="telefon" className="mb-1.5 block text-xs font-medium text-sp-text-muted">
+                      Telefonnummer <span className="text-sp-accent">*</span>
+                    </label>
+                    <div className="flex items-center rounded-lg border border-sp-border-strong bg-sp-bg px-3 transition-all duration-200 focus-within:border-sp-accent focus-within:shadow-[0_0_0_3px_var(--sp-accent-soft)]">
+                      <span className="mr-2 text-sp-text-muted">
+                        <PhoneIcon />
+                      </span>
+                      <input
+                        type="tel"
+                        id="telefon"
+                        placeholder="+43 664 123 4567"
+                        value={telefon}
+                        onChange={(e) => setTelefon(e.target.value)}
+                        className="flex-1 border-none bg-transparent py-3 font-[family-name:var(--font-mono-family)] text-sm text-sp-text outline-none placeholder:text-sp-text-subtle"
+                      />
                     </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-1 font-[family-name:var(--font-mono-family)] text-xs text-sp-accent">
-                  ★ 4,8
-                </div>
-              </div>
 
-              <a
-                href="#"
-                className="group flex w-full items-center justify-center gap-2.5 rounded-lg bg-sp-accent px-5 py-3 text-sm font-semibold text-black shadow-[0_0_0_1px_var(--sp-accent),0_8px_32px_-8px_var(--sp-accent-glow)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_0_0_1px_var(--sp-accent),0_16px_48px_-12px_var(--sp-accent-glow)]"
-              >
-                Jetzt in 2 Klicks wechseln
-                <ChevronIcon />
-              </a>
+                  <div className="mb-4">
+                    <label htmlFor="lead-email" className="mb-1.5 block text-xs font-medium text-sp-text-muted">
+                      E-Mail <span className="text-sp-text-subtle">(optional)</span>
+                    </label>
+                    <div className="flex items-center rounded-lg border border-sp-border-strong bg-sp-bg px-3 transition-all duration-200 focus-within:border-sp-accent focus-within:shadow-[0_0_0_3px_var(--sp-accent-soft)]">
+                      <input
+                        type="email"
+                        id="lead-email"
+                        placeholder="deine@email.at"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="flex-1 border-none bg-transparent py-3 font-[family-name:var(--font-mono-family)] text-sm text-sp-text outline-none placeholder:text-sp-text-subtle"
+                      />
+                    </div>
+                  </div>
+
+                  {errorMsg && (
+                    <p className="mb-3 text-xs text-sp-danger">{errorMsg}</p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={submitState === "loading"}
+                    className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-sp-accent px-5 py-3.5 text-sm font-semibold text-black shadow-[0_0_0_1px_var(--sp-accent),0_8px_32px_-8px_var(--sp-accent-glow)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_0_0_1px_var(--sp-accent),0_16px_48px_-12px_var(--sp-accent-glow)] disabled:opacity-60 disabled:hover:translate-y-0"
+                  >
+                    {submitState === "loading" ? (
+                      "Wird gesendet..."
+                    ) : (
+                      <>
+                        <PhoneIcon />
+                        Jetzt Rückruf anfordern
+                      </>
+                    )}
+                  </button>
+
+                  <p className="mt-3 text-center font-[family-name:var(--font-mono-family)] text-[10px] tracking-[0.05em] text-sp-text-subtle">
+                    KOSTENLOS · UNVERBINDLICH · KEIN SPAM
+                  </p>
+                </form>
+              )}
 
               <div className="mt-auto border-t border-dashed border-sp-border pt-5 font-[family-name:var(--font-mono-family)] text-[10px] tracking-[0.05em] text-sp-text-subtle">
-                UNVERBINDLICH · KEINE E-MAIL NÖTIG · STROM LÄUFT DURCHGEHEND
+                UNVERBINDLICH · STROM LÄUFT DURCHGEHEND · 100% KOSTENLOS
               </div>
             </div>
           </div>
