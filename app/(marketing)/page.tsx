@@ -8,10 +8,12 @@ import Testimonials from "@/components/marketing/Testimonials";
 import FinalCTA from "@/components/marketing/FinalCTA";
 import Footer from "@/components/marketing/Footer";
 import ScrollReveal from "@/components/marketing/ScrollReveal";
+import JsonLd from "@/components/marketing/JsonLd";
 
 export default function HomePage() {
   return (
     <>
+      <JsonLd />
       <Nav />
       <main>
         <Hero />

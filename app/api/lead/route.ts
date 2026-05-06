@@ -1,16 +1,53 @@
 import { NextRequest, NextResponse } from "next/server";
 
-interface LeadPayload {
-  plz: string;
-  verbrauch: number;
-  preis: number;
-  saving: number;
-  telefon: string;
-  email: string;
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 60_000;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return false;
+  }
+
+  entry.count++;
+  return entry.count > RATE_LIMIT;
+}
+
+function sanitize(str: string): string {
+  return str
+    .replace(/[<>]/g, "")
+    .trim()
+    .slice(0, 500);
+}
+
+function isValidPhone(phone: string): boolean {
+  return /^[+\d\s\-()]{6,20}$/.test(phone);
+}
+
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPlz(plz: string): boolean {
+  return /^\d{4}$/.test(plz);
 }
 
 export async function POST(req: NextRequest) {
-  let body: LeadPayload;
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Zu viele Anfragen. Bitte warte kurz." },
+      { status: 429 }
+    );
+  }
+
+  let body: Record<string, unknown>;
   try {
     body = await req.json();
   } catch {
@@ -20,11 +57,44 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { plz, verbrauch, preis, saving, telefon, email } = body;
+  const plz = sanitize(String(body.plz || ""));
+  const verbrauch = Number(body.verbrauch) || 0;
+  const preis = Number(body.preis) || 0;
+  const saving = Number(body.saving) || 0;
+  const telefon = sanitize(String(body.telefon || ""));
+  const email = sanitize(String(body.email || ""));
 
   if (!telefon && !email) {
     return NextResponse.json(
       { error: "Bitte Telefonnummer oder E-Mail angeben." },
+      { status: 400 }
+    );
+  }
+
+  if (telefon && !isValidPhone(telefon)) {
+    return NextResponse.json(
+      { error: "Bitte eine gültige Telefonnummer angeben." },
+      { status: 400 }
+    );
+  }
+
+  if (email && !isValidEmail(email)) {
+    return NextResponse.json(
+      { error: "Bitte eine gültige E-Mail-Adresse angeben." },
+      { status: 400 }
+    );
+  }
+
+  if (!isValidPlz(plz)) {
+    return NextResponse.json(
+      { error: "Bitte eine gültige 4-stellige PLZ angeben." },
+      { status: 400 }
+    );
+  }
+
+  if (verbrauch < 500 || verbrauch > 50000) {
+    return NextResponse.json(
+      { error: "Verbrauch muss zwischen 500 und 50.000 kWh liegen." },
       { status: 400 }
     );
   }
@@ -37,30 +107,34 @@ export async function POST(req: NextRequest) {
       timeZone: "Europe/Vienna",
     });
 
-    await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "sparestrom.at <leads@sparestrom.at>",
-        to: [notifyEmail],
-        subject: `Neue Anfrage: ${telefon || email} — €${saving} Ersparnis`,
-        html: `
-          <h2>Neue Stromvergleich-Anfrage</h2>
-          <table style="border-collapse:collapse;font-family:sans-serif;">
-            <tr><td style="padding:6px 12px;font-weight:bold;">Telefon</td><td style="padding:6px 12px;">${telefon || "–"}</td></tr>
-            <tr><td style="padding:6px 12px;font-weight:bold;">E-Mail</td><td style="padding:6px 12px;">${email || "–"}</td></tr>
-            <tr><td style="padding:6px 12px;font-weight:bold;">PLZ</td><td style="padding:6px 12px;">${plz}</td></tr>
-            <tr><td style="padding:6px 12px;font-weight:bold;">Verbrauch</td><td style="padding:6px 12px;">${verbrauch} kWh/Jahr</td></tr>
-            <tr><td style="padding:6px 12px;font-weight:bold;">Aktueller Preis</td><td style="padding:6px 12px;">${preis} ct/kWh</td></tr>
-            <tr><td style="padding:6px 12px;font-weight:bold;">Errechnete Ersparnis</td><td style="padding:6px 12px;color:#16a34a;font-weight:bold;">€ ${saving} / Jahr</td></tr>
-            <tr><td style="padding:6px 12px;font-weight:bold;">Zeitpunkt</td><td style="padding:6px 12px;">${timestamp}</td></tr>
-          </table>
-        `,
-      }),
-    });
+    try {
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "sparestrom.at <leads@sparestrom.at>",
+          to: [notifyEmail],
+          subject: `Neue Anfrage: ${telefon || email} — €${saving} Ersparnis`,
+          html: `
+            <h2>Neue Stromvergleich-Anfrage</h2>
+            <table style="border-collapse:collapse;font-family:sans-serif;">
+              <tr><td style="padding:8px 16px;font-weight:bold;background:#f5f5f5;">Telefon</td><td style="padding:8px 16px;">${telefon || "–"}</td></tr>
+              <tr><td style="padding:8px 16px;font-weight:bold;background:#f5f5f5;">E-Mail</td><td style="padding:8px 16px;">${email || "–"}</td></tr>
+              <tr><td style="padding:8px 16px;font-weight:bold;background:#f5f5f5;">PLZ</td><td style="padding:8px 16px;">${plz}</td></tr>
+              <tr><td style="padding:8px 16px;font-weight:bold;background:#f5f5f5;">Verbrauch</td><td style="padding:8px 16px;">${verbrauch.toLocaleString("de-AT")} kWh/Jahr</td></tr>
+              <tr><td style="padding:8px 16px;font-weight:bold;background:#f5f5f5;">Aktueller Preis</td><td style="padding:8px 16px;">${preis} ct/kWh</td></tr>
+              <tr><td style="padding:8px 16px;font-weight:bold;background:#f5f5f5;">Errechnete Ersparnis</td><td style="padding:8px 16px;color:#16a34a;font-weight:bold;">€ ${saving} / Jahr</td></tr>
+              <tr><td style="padding:8px 16px;font-weight:bold;background:#f5f5f5;">Zeitpunkt</td><td style="padding:8px 16px;">${timestamp}</td></tr>
+            </table>
+          `,
+        }),
+      });
+    } catch {
+      // Mail-Fehler loggen, aber Lead trotzdem als Erfolg zurückmelden
+    }
   }
 
   return NextResponse.json({ success: true });

@@ -11,22 +11,19 @@ function BoltIcon() {
 const SERVICE_LINKS = [
   { label: "Stromrechner", href: "#rechner" },
   { label: "So funktioniert's", href: "#wie" },
-  { label: "Anbieter-Vergleich", href: "#" },
-  { label: "Wechsel-Status", href: "#" },
+  { label: "FAQ", href: "#mythen" },
+  { label: "Bewertungen", href: "#bewertungen" },
 ];
 
 const ABOUT_LINKS = [
-  { label: "Das Team", href: "#" },
   { label: "Kundenstimmen", href: "#bewertungen" },
-  { label: "Presse", href: "#" },
-  { label: "Kontakt", href: "#" },
+  { label: "Kontakt", href: "mailto:info@sparestrom.at" },
 ];
 
 const LEGAL_LINKS = [
   { label: "Impressum", href: "/legal/impressum" },
   { label: "Datenschutz", href: "/legal/datenschutz" },
   { label: "AGB", href: "/legal/agb" },
-  { label: "Cookie-Einstellungen", href: "#" },
 ];
 
 export default function Footer() {
@@ -36,7 +33,7 @@ export default function Footer() {
         <div className="mb-12 grid grid-cols-[1.3fr_1fr_1fr_1fr] gap-12 max-[780px]:grid-cols-2 max-[780px]:gap-8 max-[480px]:grid-cols-1">
           <div>
             <Link
-              href="#"
+              href="/"
               className="inline-flex items-center gap-2 font-[family-name:var(--font-display)] text-lg font-bold tracking-[-0.02em]"
             >
               <span className="inline-grid h-6 w-6 place-items-center rounded-[5px] bg-sp-accent text-black shadow-[0_0_20px_var(--sp-accent-glow)]">
@@ -73,7 +70,7 @@ export default function Footer() {
 
           <div>
             <h4 className="mb-4 font-[family-name:var(--font-mono-family)] text-[11px] font-medium uppercase tracking-[0.12em] text-sp-text-muted">
-              Über uns
+              Kontakt
             </h4>
             <ul className="list-none">
               {ABOUT_LINKS.map((link) => (

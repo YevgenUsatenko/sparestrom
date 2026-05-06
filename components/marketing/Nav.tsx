@@ -19,7 +19,7 @@ export default function Nav() {
     <nav className="sticky top-0 z-50 border-b border-sp-border bg-[rgba(8,9,12,0.72)] backdrop-blur-[18px] backdrop-saturate-[140%]">
       <div className="mx-auto flex h-16 max-w-[var(--sp-container)] items-center justify-between px-[var(--sp-gutter)]">
         <Link
-          href="#"
+          href="/"
           className="inline-flex items-center gap-2 font-[family-name:var(--font-display)] text-lg font-bold tracking-[-0.02em]"
         >
           <span className="inline-grid h-6 w-6 place-items-center rounded-[5px] bg-sp-accent text-black shadow-[0_0_20px_var(--sp-accent-glow)]">
