@@ -58,7 +58,7 @@ export default function Myths() {
         <div className="reveal mb-14 max-w-[720px]">
           <span className="inline-flex items-center gap-2.5 font-[family-name:var(--font-mono-family)] text-[11px] font-medium uppercase tracking-[0.12em] text-sp-text-muted">
             <span className="inline-block h-px w-6 bg-sp-text-muted" />
-            <span className="text-sp-accent">03</span> / Einwände
+            <span className="text-sp-accent">04</span> / Einwände
           </span>
           <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(36px,5vw,60px)] font-medium leading-none tracking-[-0.03em]">
             Was{" "}

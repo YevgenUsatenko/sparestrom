@@ -103,10 +103,21 @@ export default function DatenschutzPage() {
         <h2 className="mb-3 font-[family-name:var(--font-display)] text-lg font-medium">
           8. Cookies & Analyse
         </h2>
-        <p className="text-sm leading-relaxed text-sp-text-muted">
-          Diese Website verwendet <strong className="text-sp-text">keine Cookies</strong> und
-          kein Tracking. Wir setzen keine Analyse-Tools ein, die personenbezogene Daten erheben.
-        </p>
+        <div className="text-sm leading-relaxed text-sp-text-muted">
+          <p className="mb-2">
+            Diese Website verwendet <strong className="text-sp-text">keine Cookies</strong>.
+          </p>
+          <p className="mb-2">
+            Wir verwenden <strong className="text-sp-text">Plausible Analytics</strong>, ein
+            datenschutzfreundliches Analysetool mit Sitz in der EU. Plausible erhebt keine
+            personenbezogenen Daten, verwendet keine Cookies und ist vollständig DSGVO-konform.
+            Es werden ausschließlich aggregierte, anonyme Nutzungsstatistiken erfasst
+            (z.&nbsp;B. Seitenaufrufe, Verweisquellen, Gerätetyp).
+          </p>
+          <p>
+            Weitere Informationen: <a href="https://plausible.io/data-policy" className="text-sp-accent hover:underline" target="_blank" rel="noopener noreferrer">plausible.io/data-policy</a>
+          </p>
+        </div>
       </section>
 
       <section className="mb-8">

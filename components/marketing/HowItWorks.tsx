@@ -27,7 +27,7 @@ export default function HowItWorks() {
           <div>
             <span className="inline-flex items-center gap-2.5 font-[family-name:var(--font-mono-family)] text-[11px] font-medium uppercase tracking-[0.12em] text-sp-text-muted">
               <span className="inline-block h-px w-6 bg-sp-text-muted" />
-              <span className="text-sp-accent">02</span> / So einfach geht&apos;s
+              <span className="text-sp-accent">03</span> / So einfach geht&apos;s
             </span>
             <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(36px,5vw,60px)] font-medium leading-none tracking-[-0.03em]">
               Drei Schritte.

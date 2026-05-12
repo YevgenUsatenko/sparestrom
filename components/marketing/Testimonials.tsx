@@ -36,7 +36,7 @@ export default function Testimonials() {
           <div>
             <span className="inline-flex items-center gap-2.5 font-[family-name:var(--font-mono-family)] text-[11px] font-medium uppercase tracking-[0.12em] text-sp-text-muted">
               <span className="inline-block h-px w-6 bg-sp-text-muted" />
-              <span className="text-sp-accent">04</span> / Echte Stimmen
+              <span className="text-sp-accent">05</span> / Echte Stimmen
             </span>
             <h2 className="mt-4 max-w-[600px] font-[family-name:var(--font-display)] text-[clamp(32px,4.5vw,52px)] font-medium leading-none tracking-[-0.03em]">
               Österreicher, die{" "}

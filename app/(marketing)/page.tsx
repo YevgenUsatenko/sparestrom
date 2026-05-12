@@ -1,6 +1,7 @@
 import Nav from "@/components/marketing/Nav";
 import Hero from "@/components/marketing/Hero";
 import TrustStrip from "@/components/marketing/TrustStrip";
+import Benefits from "@/components/marketing/Benefits";
 import Calculator from "@/components/marketing/Calculator";
 import HowItWorks from "@/components/marketing/HowItWorks";
 import Myths from "@/components/marketing/Myths";
@@ -18,6 +19,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <TrustStrip />
+        <Benefits />
         <Calculator />
         <HowItWorks />
         <Myths />

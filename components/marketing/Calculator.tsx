@@ -44,6 +44,7 @@ export default function Calculator() {
   const [preis, setPreis] = useState(29.5);
   const [activePreset, setActivePreset] = useState(3500);
 
+  const [name, setName] = useState("");
   const [telefon, setTelefon] = useState("");
   const [email, setEmail] = useState("");
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -82,6 +83,7 @@ export default function Calculator() {
           verbrauch,
           preis,
           saving: Math.round(saving),
+          name: name.trim(),
           telefon: telefon.trim(),
           email: email.trim(),
         }),
@@ -311,6 +313,22 @@ export default function Calculator() {
                     <p className="text-xs leading-relaxed text-sp-text-muted">
                       Wir finden den besten Tarif für dich — unverbindlich und ohne Kosten.
                     </p>
+                  </div>
+
+                  <div className="mb-3">
+                    <label htmlFor="lead-name" className="mb-1.5 block text-xs font-medium text-sp-text-muted">
+                      Name <span className="text-sp-text-subtle">(optional)</span>
+                    </label>
+                    <div className="flex items-center rounded-lg border border-sp-border-strong bg-sp-bg px-3 transition-all duration-200 focus-within:border-sp-accent focus-within:shadow-[0_0_0_3px_var(--sp-accent-soft)]">
+                      <input
+                        type="text"
+                        id="lead-name"
+                        placeholder="Max Mustermann"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="flex-1 border-none bg-transparent py-3 font-[family-name:var(--font-mono-family)] text-sm text-sp-text outline-none placeholder:text-sp-text-subtle"
+                      />
+                    </div>
                   </div>
 
                   <div className="mb-3">

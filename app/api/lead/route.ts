@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { leads } from "@/lib/db/schema";
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 5;
@@ -63,6 +65,7 @@ export async function POST(req: NextRequest) {
   const saving = Number(body.saving) || 0;
   const telefon = sanitize(String(body.telefon || ""));
   const email = sanitize(String(body.email || ""));
+  const name = sanitize(String(body.name || ""));
 
   if (!telefon && !email) {
     return NextResponse.json(
@@ -99,6 +102,26 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Save to database
+  const dbUrl = process.env.DATABASE_URL;
+  if (dbUrl) {
+    try {
+      await db.insert(leads).values({
+        plz,
+        verbrauch,
+        preis,
+        saving: Math.round(saving),
+        telefon: telefon || null,
+        email: email || null,
+        name: name || null,
+        ip,
+      });
+    } catch {
+      // DB save failed — continue with email notification
+    }
+  }
+
+  // Send email notification
   const apiKey = process.env.RESEND_API_KEY;
   const notifyEmail = process.env.NOTIFY_EMAIL || "usatenko@beloom.at";
 
@@ -121,6 +144,7 @@ export async function POST(req: NextRequest) {
           html: `
             <h2>Neue Stromvergleich-Anfrage</h2>
             <table style="border-collapse:collapse;font-family:sans-serif;">
+              ${name ? `<tr><td style="padding:8px 16px;font-weight:bold;background:#f5f5f5;">Name</td><td style="padding:8px 16px;">${name}</td></tr>` : ""}
               <tr><td style="padding:8px 16px;font-weight:bold;background:#f5f5f5;">Telefon</td><td style="padding:8px 16px;">${telefon || "–"}</td></tr>
               <tr><td style="padding:8px 16px;font-weight:bold;background:#f5f5f5;">E-Mail</td><td style="padding:8px 16px;">${email || "–"}</td></tr>
               <tr><td style="padding:8px 16px;font-weight:bold;background:#f5f5f5;">PLZ</td><td style="padding:8px 16px;">${plz}</td></tr>

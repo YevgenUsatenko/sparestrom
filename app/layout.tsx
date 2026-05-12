@@ -4,6 +4,7 @@ import {
   Geist,
   JetBrains_Mono,
 } from "next/font/google";
+import PlausibleProvider from "next-plausible";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -67,6 +68,12 @@ export default function RootLayout({
       lang="de-AT"
       className={`${bricolage.variable} ${geist.variable} ${jetbrainsMono.variable}`}
     >
+      <head>
+        <PlausibleProvider
+          src={process.env.NEXT_PUBLIC_PLAUSIBLE_SRC || "https://plausible.io/js/script.js"}
+          init={{ captureOnLocalhost: false }}
+        />
+      </head>
       <body>
         <div className="dot-grid" />
         <div className="grain" />

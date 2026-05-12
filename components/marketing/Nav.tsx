@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 function BoltIcon() {
   return (
@@ -14,7 +17,16 @@ function BoltIcon() {
   );
 }
 
+const NAV_LINKS = [
+  { label: "Rechner", href: "#rechner" },
+  { label: "So funktioniert's", href: "#wie" },
+  { label: "FAQ", href: "#mythen" },
+  { label: "Bewertungen", href: "#bewertungen" },
+];
+
 export default function Nav() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
     <nav className="sticky top-0 z-50 border-b border-sp-border bg-[rgba(8,9,12,0.72)] backdrop-blur-[18px] backdrop-saturate-[140%]">
       <div className="mx-auto flex h-16 max-w-[var(--sp-container)] items-center justify-between px-[var(--sp-gutter)]">
@@ -30,39 +42,17 @@ export default function Nav() {
           sparestrom<span className="text-sp-accent">.at</span>
         </Link>
 
-        <ul className="hidden items-center gap-8 md-[860px]:flex">
-          <li>
-            <a
-              href="#rechner"
-              className="text-sm text-sp-text-muted transition-colors duration-200 hover:text-sp-text"
-            >
-              Rechner
-            </a>
-          </li>
-          <li>
-            <a
-              href="#wie"
-              className="text-sm text-sp-text-muted transition-colors duration-200 hover:text-sp-text"
-            >
-              So funktioniert&apos;s
-            </a>
-          </li>
-          <li>
-            <a
-              href="#mythen"
-              className="text-sm text-sp-text-muted transition-colors duration-200 hover:text-sp-text"
-            >
-              FAQ
-            </a>
-          </li>
-          <li>
-            <a
-              href="#bewertungen"
-              className="text-sm text-sp-text-muted transition-colors duration-200 hover:text-sp-text"
-            >
-              Bewertungen
-            </a>
-          </li>
+        <ul className="hidden items-center gap-8 min-[860px]:flex">
+          {NAV_LINKS.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                className="text-sm text-sp-text-muted transition-colors duration-200 hover:text-sp-text"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
         </ul>
 
         <div className="inline-flex items-center gap-2.5">
@@ -72,12 +62,55 @@ export default function Nav() {
           </span>
           <a
             href="#rechner"
-            className="inline-flex items-center gap-2.5 rounded-lg bg-sp-accent px-5 py-3 text-sm font-semibold text-black shadow-[0_0_0_1px_var(--sp-accent),0_8px_32px_-8px_var(--sp-accent-glow)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_0_0_1px_var(--sp-accent),0_16px_48px_-12px_var(--sp-accent-glow)]"
+            className="hidden items-center gap-2.5 rounded-lg bg-sp-accent px-5 py-3 text-sm font-semibold text-black shadow-[0_0_0_1px_var(--sp-accent),0_8px_32px_-8px_var(--sp-accent-glow)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_0_0_1px_var(--sp-accent),0_16px_48px_-12px_var(--sp-accent-glow)] min-[860px]:inline-flex"
+          >
+            Jetzt sparen →
+          </a>
+
+          <button
+            type="button"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="inline-grid h-10 w-10 place-items-center rounded-lg border border-sp-border-strong text-sp-text-muted transition-colors hover:text-sp-text min-[860px]:hidden"
+            aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
+            aria-expanded={mobileOpen}
+          >
+            {mobileOpen ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M3 12h18M3 6h18M3 18h18" />
+              </svg>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {mobileOpen && (
+        <div className="border-t border-sp-border bg-sp-bg px-[var(--sp-gutter)] pb-6 pt-4 min-[860px]:hidden">
+          <ul className="mb-4 list-none space-y-1">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="block rounded-lg px-3 py-2.5 text-sm text-sp-text-muted transition-colors hover:bg-sp-surface hover:text-sp-text"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a
+            href="#rechner"
+            onClick={() => setMobileOpen(false)}
+            className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-sp-accent px-5 py-3 text-sm font-semibold text-black shadow-[0_0_0_1px_var(--sp-accent),0_8px_32px_-8px_var(--sp-accent-glow)]"
           >
             Jetzt sparen →
           </a>
         </div>
-      </div>
+      )}
     </nav>
   );
 }

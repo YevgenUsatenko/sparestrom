@@ -24,7 +24,7 @@ export default function FinalCTA() {
       <div className="relative z-2">
         <span className="mb-5 inline-flex items-center gap-2.5 font-[family-name:var(--font-mono-family)] text-[11px] font-medium uppercase tracking-[0.12em] text-sp-text-muted">
           <span className="inline-block h-px w-6 bg-sp-text-muted" />
-          <span className="text-sp-accent">05</span> / Los geht&apos;s
+          <span className="text-sp-accent">06</span> / Los geht&apos;s
         </span>
         <h2 className="mx-auto mb-7 max-w-[880px] font-[family-name:var(--font-display)] text-[clamp(40px,7vw,88px)] font-medium leading-[0.95] tracking-[-0.035em]">
           Dein Stromanbieter verdient
