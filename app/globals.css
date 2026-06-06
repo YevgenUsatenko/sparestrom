@@ -190,6 +190,18 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
+   LEGAL PROSE
+   ───────────────────────────────────────────────────────────── */
+.prose-legal h1 { margin-bottom: 2rem; }
+.prose-legal h2 { margin-bottom: 0.75rem; }
+.prose-legal section { margin-bottom: 2rem; }
+.prose-legal p { margin-bottom: 0.5rem; }
+.prose-legal ul { margin-left: 1rem; list-style-type: disc; }
+.prose-legal li { margin-bottom: 0.25rem; }
+.prose-legal a { color: var(--sp-accent); text-decoration: none; }
+.prose-legal a:hover { text-decoration: underline; }
+
+/* ─────────────────────────────────────────────────────────────
    BACKGROUND EFFECTS
    ───────────────────────────────────────────────────────────── */
 .grain {

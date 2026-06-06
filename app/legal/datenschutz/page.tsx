@@ -7,9 +7,6 @@ export const metadata: Metadata = {
 export default function DatenschutzPage() {
   return (
     <article className="prose-legal">
-      <p className="mb-8 rounded-lg border border-yellow-500/30 bg-yellow-500/5 px-4 py-3 text-sm text-yellow-400">
-        ⚠️ Entwurf — von Rechtsanwalt zu prüfen vor Go-Live
-      </p>
 
       <h1 className="mb-8 font-[family-name:var(--font-display)] text-3xl font-medium tracking-[-0.02em]">
         Datenschutzerklärung
@@ -20,8 +17,8 @@ export default function DatenschutzPage() {
           1. Verantwortlicher
         </h2>
         <div className="text-sm leading-relaxed text-sp-text-muted">
-          <p>[Firmenname GmbH — in Gründung]</p>
-          <p>[Adresse], 5020 Salzburg, Österreich</p>
+          <p>sparestrom.at — Yevgen Usatenko</p>
+          <p>5020 Salzburg, Österreich</p>
           <p>E-Mail: <a href="mailto:datenschutz@sparestrom.at" className="text-sp-accent hover:underline">datenschutz@sparestrom.at</a></p>
         </div>
       </section>

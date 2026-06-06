@@ -7,9 +7,6 @@ export const metadata: Metadata = {
 export default function ImpressumPage() {
   return (
     <article className="prose-legal">
-      <p className="mb-8 rounded-lg border border-yellow-500/30 bg-yellow-500/5 px-4 py-3 text-sm text-yellow-400">
-        ⚠️ Entwurf — von Rechtsanwalt zu prüfen vor Go-Live
-      </p>
 
       <h1 className="mb-8 font-[family-name:var(--font-display)] text-3xl font-medium tracking-[-0.02em]">
         Impressum
@@ -20,8 +17,8 @@ export default function ImpressumPage() {
           Angaben gemäß § 5 E-Commerce-Gesetz (ECG)
         </h2>
         <div className="space-y-1 text-sm leading-relaxed text-sp-text-muted">
-          <p><strong className="text-sp-text">[Firmenname GmbH — in Gründung]</strong></p>
-          <p>[Straße + Hausnummer]</p>
+          <p><strong className="text-sp-text">sparestrom.at</strong></p>
+          <p>Yevgen Usatenko</p>
           <p>5020 Salzburg, Österreich</p>
         </div>
       </section>
@@ -32,7 +29,7 @@ export default function ImpressumPage() {
         </h2>
         <div className="space-y-1 text-sm leading-relaxed text-sp-text-muted">
           <p>E-Mail: <a href="mailto:info@sparestrom.at" className="text-sp-accent hover:underline">info@sparestrom.at</a></p>
-          <p>Telefon: [Telefonnummer]</p>
+          <p>Telefon: auf Anfrage per E-Mail</p>
         </div>
       </section>
 
@@ -50,9 +47,8 @@ export default function ImpressumPage() {
           Registrierungsdaten
         </h2>
         <div className="space-y-1 text-sm leading-relaxed text-sp-text-muted">
-          <p>Firmenbuchnummer: [FN XXXXXX x]</p>
-          <p>Firmenbuchgericht: Landesgericht Salzburg</p>
-          <p>UID-Nummer: [ATU XXXXXXXX]</p>
+          <p>Einzelunternehmen</p>
+          <p>Standort: Salzburg, Österreich</p>
         </div>
       </section>
 

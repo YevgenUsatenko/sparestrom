@@ -51,10 +51,10 @@ export default function TrustStrip() {
       <div className="mx-auto grid max-w-[var(--sp-container)] grid-cols-4 gap-6 px-[var(--sp-gutter)] max-[820px]:grid-cols-2">
         <div className="border-r border-sp-border px-2 max-[820px]:border-b max-[820px]:pb-6">
           <div className="mb-1.5 font-[family-name:var(--font-display)] text-[clamp(28px,3.5vw,38px)] font-medium leading-none tracking-[-0.025em]">
-            <CountUp target={12847} />+
+            <CountUp target={30} />+
           </div>
           <div className="font-[family-name:var(--font-mono-family)] text-[13px] tracking-[0.02em] text-sp-text-muted">
-            Haushalte gewechselt
+            Tarife verglichen
           </div>
         </div>
 
@@ -80,10 +80,10 @@ export default function TrustStrip() {
 
         <div className="px-2">
           <div className="mb-1.5 font-[family-name:var(--font-display)] text-[clamp(28px,3.5vw,38px)] font-medium leading-none tracking-[-0.025em]">
-            4,9<span className="text-[0.7em] text-sp-accent">/5</span>
+            100<span className="text-[0.7em] text-sp-accent">%</span>
           </div>
           <div className="font-[family-name:var(--font-mono-family)] text-[13px] tracking-[0.02em] text-sp-text-muted">
-            2.341 verifizierte Bewertungen
+            kostenlos & unverbindlich
           </div>
         </div>
       </div>

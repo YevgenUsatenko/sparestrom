@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { leads } from "@/lib/db/schema";
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -102,9 +102,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Save to database
-  const dbUrl = process.env.DATABASE_URL;
-  if (dbUrl) {
+  const db = getDb();
+  if (db) {
     try {
       await db.insert(leads).values({
         plz,

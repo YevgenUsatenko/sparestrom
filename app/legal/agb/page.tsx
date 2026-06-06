@@ -7,9 +7,6 @@ export const metadata: Metadata = {
 export default function AGBPage() {
   return (
     <article className="prose-legal">
-      <p className="mb-8 rounded-lg border border-yellow-500/30 bg-yellow-500/5 px-4 py-3 text-sm text-yellow-400">
-        ⚠️ Entwurf — von Rechtsanwalt zu prüfen vor Go-Live
-      </p>
 
       <h1 className="mb-8 font-[family-name:var(--font-display)] text-3xl font-medium tracking-[-0.02em]">
         Allgemeine Geschäftsbedingungen
@@ -21,7 +18,7 @@ export default function AGBPage() {
         </h2>
         <p className="text-sm leading-relaxed text-sp-text-muted">
           Diese AGB gelten für die Nutzung des Stromvergleichs- und Vermittlungsservice
-          auf sparestrom.at, betrieben von [Firmenname GmbH — in Gründung],
+          auf sparestrom.at, betrieben von Yevgen Usatenko,
           5020 Salzburg, Österreich.
         </p>
       </section>

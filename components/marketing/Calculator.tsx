@@ -233,6 +233,7 @@ export default function Calculator() {
 
               <button
                 type="button"
+                onClick={() => document.getElementById("ergebnis")?.scrollIntoView({ behavior: "smooth", block: "center" })}
                 className="mt-2 flex w-full items-center justify-center gap-2.5 rounded-[10px] bg-sp-accent px-4 py-4 text-[15px] font-semibold text-black shadow-[0_8px_24px_-8px_var(--sp-accent-glow)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_16px_40px_-12px_var(--sp-accent-glow)]"
               >
                 <BoltIcon />
@@ -241,7 +242,7 @@ export default function Calculator() {
             </div>
 
             {/* Results */}
-            <div className="relative flex flex-col bg-[radial-gradient(ellipse_at_top_right,var(--sp-accent-soft)_0%,transparent_60%)] p-11 max-[900px]:p-8">
+            <div id="ergebnis" className="relative flex flex-col bg-[radial-gradient(ellipse_at_top_right,var(--sp-accent-soft)_0%,transparent_60%)] p-11 max-[900px]:p-8">
               <div className="mb-4 flex items-center gap-2.5 font-[family-name:var(--font-mono-family)] text-[11px] uppercase tracking-[0.15em] text-sp-text-muted">
                 <span className="text-sp-accent">◉</span> DEIN ERGEBNIS
               </div>
